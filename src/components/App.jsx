@@ -17,7 +17,7 @@ class App extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
 
-    const { name, contacts, number } = this.state;
+    const { name, number } = this.state;
 
     const newContact = {
       id: nanoid(),
