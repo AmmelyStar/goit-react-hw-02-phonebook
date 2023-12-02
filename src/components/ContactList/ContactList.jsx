@@ -5,9 +5,9 @@ import css from './style.module.css';
 const ContactList = ({ contacts, onRemoveContact }) => {
   return (
     <div className={css.container}>
-      <h2 className={css.contacts}>Contacts</h2>
-      <div className={css.list}>
-        <ul>
+      <h2 className={css.contacts}>Contacts List</h2>
+      <div className={css.form}>
+        <ul className={css.list}>
           {contacts.map((contact) => (
             <li key={contact.id} className={css.item}>
               {contact.name} - {contact.number}

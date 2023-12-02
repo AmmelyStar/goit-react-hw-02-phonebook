@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './style.module.css'
+import css from './style.module.css'
 import ContactForm from './ContactForm/ContactForm';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
@@ -58,7 +58,7 @@ class App extends Component {
 
           <ContactForm addContact={this.addContact} />
 
-          <h2>Contacts</h2>
+          <h2 className={css.app}>Contacts</h2>
           <Filter
             name="filter"
             value={filter}
