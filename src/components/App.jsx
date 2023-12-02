@@ -1,79 +1,77 @@
-import { nanoid } from 'nanoid'
 import React, { Component } from 'react';
+import './style.module.css'
+import ContactForm from './ContactForm/ContactForm';
+import Filter from './Filter/Filter';
+import ContactList from './ContactList/ContactList';
 
 class App extends Component {
   state = {
-    contacts: [],
-    name: '',
-    number: ''
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
   };
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
+  addContact = (newContact) => {
+    const { contacts } = this.state;
+
+   
+    const isNameExist = contacts.some((contact) => contact.name === newContact.name);
+
+    if (isNameExist) {
+      alert(`${newContact.name} is already in contacts!`);
+    } else {
+      this.setState((prevState) => ({
+        contacts: [...prevState.contacts, newContact],
+      }));
+    }
+  };
+
+  onChangeFilter = evt => {
+    const { name, value } = evt.target;
     this.setState({ [name]: value });
-    
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-
-    const { name, number } = this.state;
-
-    const newContact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-
-    this.setState((prevState) => ({
-      contacts: [...prevState.contacts, newContact],
-      name: '',
-      number: '',
-    }));
-     
+    removeContact = contactId => {
+    this.setState(prevState => {
+      return {
+        contacts: prevState.contacts.filter(({ id }) => id !== contactId),
+      };
+    });
   };
 
   render() {
-    const { name, contacts, number } = this.state;
+    const { contacts, filter } = this.state;
+
+    
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
 
     return (
-      <div>
-        <h1>Phonebook</h1>
+      <>
+        <div>
+          <h1>Phonebook</h1>
 
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={this.handleChange}
-              required
-            />
-          </label>
-          <label>
-            Number:
-            <input
-              type="tel"
-              name="number"
-              value={number}
-              onChange={this.handleChange}
-              required
-            />
-          </label>
-          <button type="submit">Add contact</button>
-        </form>
+          <ContactForm addContact={this.addContact} />
 
-        <h2>Contacts</h2>
-        <ul>
-          {contacts.map((contact) => (
-            <li key={contact.id}>{contact.name} - {contact.number}</li>
-          ))}
-        </ul>
-      </div>
+          <h2>Contacts</h2>
+          <Filter
+            name="filter"
+            value={filter}
+            onChangeFilter={this.onChangeFilter}
+          />
+          <ContactList
+            contacts={filteredContacts}
+            onRemoveContact={this.removeContact}
+          />
+        </div>
+      </>
     );
   }
 }
-
 
 export default App;
