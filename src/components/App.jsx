@@ -19,7 +19,7 @@ class App extends Component {
     const { contacts } = this.state;
 
    
-    const isNameExist = contacts.some((contact) => contact.name === newContact.name);
+    const isNameExist = contacts.some((contact) => contact.name.toLowerCase() === newContact.name.toLowerCase());
 
     if (isNameExist) {
       alert(`${newContact.name} is already in contacts!`);
